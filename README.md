@@ -134,9 +134,3 @@ $ExportPath = ".\AD_Gruppen_User_Matrix.csv"
 -   Rollenmodell-Definition (RBAC)
 -   Bereinigung historisch gewachsener Gruppen
 -   IAM- & Audit-Projekte
-
-------------------------------------------------------------------------
-
-## 👤 Maintainer
-
-Interne IT / IAM / Active Directory Team
