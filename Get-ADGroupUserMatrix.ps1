@@ -1,10 +1,10 @@
 Import-Module ActiveDirectory
 
 # ==========================================================
-# CONFIGURATION
+# KONFIGURATION
 # ==========================================================
 
-# --- User-Source ---
+# --- User-Quelle ---
 $SourceGroup     = "Finance-Team-Group"
 $UseSourceGroup  = $true
 
@@ -13,30 +13,30 @@ $ManualUsers = @(
     "user2"
 )
 
-# --- OPTIONAL USER-Exclusions ---
-# (all optional – empty values = no effect)
+# --- OPTIONALE USER-AUSSCHLÜSSE ---
+# (alle optional – leere Werte = keine Wirkung)
 
-# A) explicit User
+# A) explizite User
 $ExcludedUsers = @(
     "SVC_Automation_user",
     "max_admin"
 )
 
-# B) Naming Convention / Regex (leave empty to deactivate)
+# B) Naming Convention / Regex (leer lassen zum Deaktivieren)
 #$ExcludeUserPattern = "^(svc_|adm_|ext_)"
  $ExcludeUserPattern = $null
 
-# C) only use enabled users
+# C) Nur aktive Benutzer berücksichtigen
 $OnlyEnabledUsers = $false
 
-# --- group filter ---
+# --- Gruppenfilter ---
 $ExcludeGroupPattern = "Domain Users|Printer|VPN|WLAN|Default"
 
 # --- Export ---
-$ExportPath = ".\AD_Group_User_Matrix.csv"
+$ExportPath = ".\AD_Gruppen_User_Matrix.csv"
 
 # ==========================================================
-# collect users + filter
+# USER ERMITTELN + FILTERN
 # ==========================================================
 
 $Users = @()
@@ -50,13 +50,13 @@ if ($UseSourceGroup) {
 
         $Sam = $User.SamAccountName
 
-        # A) Explicit Excludes
+        # A) Explizite Excludes
         if ($ExcludedUsers -and $Sam -in $ExcludedUsers) { continue }
 
         # B) Regex Excludes
         if ($ExcludeUserPattern -and $Sam -match $ExcludeUserPattern) { continue }
 
-        # C) check enabled status 
+        # C) Enabled-Status prüfen
         if ($OnlyEnabledUsers) {
             $ADUser = Get-ADUser $Sam -Properties Enabled
             if (-not $ADUser.Enabled) { continue }
@@ -81,12 +81,12 @@ else {
 }
 
 if (-not $Users) {
-    Write-Error "There are no users after applying the filter."
+    Write-Error "Keine Benutzer nach Filterung übrig."
     return
 }
 
 # ==========================================================
-# Read Group memberships
+# GRUPPENMITGLIEDSCHAFTEN EINMALIG LADEN
 # ==========================================================
 
 $UserGroupMap = @{}
@@ -109,7 +109,7 @@ foreach ($User in $Users) {
 }
 
 # ==========================================================
-# Build matrix
+# MATRIX AUFBAUEN
 # ==========================================================
 
 $Matrix = @()
@@ -151,7 +151,7 @@ foreach ($Group in ($AllGroups | Sort-Object)) {
 }
 
 # ==========================================================
-# Output & EXPORT
+# AUSGABE & EXPORT
 # ==========================================================
 
 $Matrix |
@@ -161,5 +161,5 @@ $Matrix |
 $Matrix | Export-Csv -Path $ExportPath -NoTypeInformation -Encoding UTF8
 
 Write-Host ""
-Write-Host "Matrix exported to:" -ForegroundColor Cyan
+Write-Host "Matrix exportiert nach:" -ForegroundColor Cyan
 Write-Host $ExportPath
