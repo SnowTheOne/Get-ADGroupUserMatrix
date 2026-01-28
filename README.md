@@ -114,16 +114,11 @@ $ExcludeGroupPattern = "Domain Users|Printer|VPN|WLAN|Default"
 
 ## 📊 Ergebnis: Gruppen-User-Matrix
 
-  -----------------------------------------------------------------------------------
-  Group          user1   user2   user3   MemberCount     CoveragePct     Relevance
-  -------------- ------- ------- ------- --------------- --------------- ------------
-  APP_SAP        X       X       X       3               100             High
-
-  FILE_FINANCE   X       X               2               66.67           Medium
-
-  PRINTER_XY             X               1               33.33           Low
-  -----------------------------------------------------------------------------------
-
+  |Group|          user1  | user2  | user3  | MemberCount    | CoveragePct	|     Relevance|
+  |--------------| -------| -------| -------| ---------------| ---------------| ------------|
+  |APP_SAP|        X      | X      | X      | 3              | 100            | High|
+  |FILE_FINANCE|   X      | X      |        | 2              | 66.67          | Medium|
+  |PRINTER_XY|            | X      |        | 1              | 33.33          | Low|
 ------------------------------------------------------------------------
 
 ## 📤 Export
